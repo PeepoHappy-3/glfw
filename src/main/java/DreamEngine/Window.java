@@ -6,7 +6,7 @@ import utils.Time;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11C.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
@@ -113,6 +113,7 @@ public class Window {
                 g = Math.max(g - 0.01f,0);
                 b = Math.max(b - 0.01f,0);
             }
+
             if(KeyInputHandler.isKeyPressed(GLFW_KEY_SPACE)){
 
             }
