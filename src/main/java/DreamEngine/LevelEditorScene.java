@@ -1,7 +1,12 @@
 package DreamEngine;
 
+import components.FontRenderer;
+import components.SpriteRenderer;
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import renderer.Shader;
+import renderer.Texture;
+import utils.Time;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -12,35 +17,15 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class LevelEditorScene extends Scene{
     private boolean changingScene = false;
-    private String vertexShaderSrc="#version 330 core\n" +
-            "layout (location = 0) in vec3 aPos;\n" +
-            "layout (location =1) in vec4 aColor;\n" +
-            "\n" +
-            "out vec4 fColor;\n" +
-            "\n" +
-            "void main(){\n" +
-            "    fColor = aColor;\n" +
-            "    gl_Position = vec4(aPos, 1.0);\n" +
-            "}";
 
-    private int vertexID, fragmentID, shaderProgram;
-    private String fragmentShaderSrc="#version 330 core\n" +
-            "\n" +
-            "in vec4 fColor;\n" +
-            "\n" +
-            "out vec4 color;\n" +
-            "\n" +
-            "void main(){\n" +
-            "    color = fColor;\n" +
-            "}";
     private float timeToChangeScene = 2.0f;
 
     private float[] vertexArray ={
-         //position                  //color
-        0.5f, -0.5f, 0.0f,          1.0f, 0.0f,0.0f,1.0f, //bottom right
-        -0.5f, 0.5f, 0.0f,          0.0f,1.0f, 0.0f, 1.0f, //top left
-        0.5f, 0.5f, 0.0f,           0.0f,0.0f, 1.0f, 1.0f, //top right
-        -0.5f, -0.5f, 0.0f,         1.0f,1.0f, 0.0f, 1.0f, //top right
+         //position                  //color                //UV coordinates
+        100.5f, 0.5f, 0.0f,          1.0f, 0.0f,0.0f,1.0f,  1,1,               //bottom right
+        0.5f,100.5f, 0.0f,          0.0f,1.0f, 0.0f, 1.0f,  0,0,               //top left
+        100.5f, 100.5f, 0.0f,       0.0f,0.0f, 1.0f, 1.0f,  1,0,               //top right
+        -0.5f, -0.5f, 0.0f,         1.0f,1.0f, 0.0f, 1.0f,  0,1,               //top right
     };
 
     //counter-clockwise
@@ -51,15 +36,28 @@ public class LevelEditorScene extends Scene{
 
     private int vaoID, vboID, eboID;
     Shader defaultShader;
+    private Texture testTexture;
+    GameObject testObj;
+    private boolean firstTime = false;
     public LevelEditorScene(){
 
     }
     @Override
     public void init(){
+        System.out.println("Creating test obj");
+
+        this.testObj = new GameObject("test obj");
+        this.testObj.addComponent(new SpriteRenderer());
+        this.testObj.addComponent(new FontRenderer());
+
+        this.addGameObjectToScene(this.testObj);
+
+        this.camera = new Camera(new Vector2f(-200,-300));
 
         defaultShader = new Shader("assets/shaders/default.glsl");
-         defaultShader.compile();
+        defaultShader.compile();
 
+        this.testTexture = new Texture("assets/images/testImage.png");
         //generate vao vbo ebo
         vaoID = glGenVertexArrays();
         glBindVertexArray(vaoID);
@@ -82,20 +80,36 @@ public class LevelEditorScene extends Scene{
         //add vertex att pointers
         int positionsSize = 3;
         int colorSize = 4;
-        int floatSizeBytes = 4;
-        int vertexSizeBytes = (positionsSize + colorSize) *floatSizeBytes;
+        int uvSize = 2;
+        int vertexSizeBytes = (positionsSize + colorSize + uvSize) * Float.BYTES;
         glVertexAttribPointer(0,positionsSize, GL_FLOAT, false, vertexSizeBytes, 0);
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeBytes,
-                positionsSize*floatSizeBytes);
+                positionsSize * Float.BYTES);
         glEnableVertexAttribArray(1);
+
+        glVertexAttribPointer(2, uvSize,GL_FLOAT, false, vertexSizeBytes,
+                (positionsSize + colorSize ) * Float.BYTES);
+        glEnableVertexAttribArray(2);
 
 
     }
     @Override
     public void update(float dt) {
-    //bind shader program
+        //bind shader program
+        camera.position.x -=20*dt;
+        camera.position.y -=20*dt;
         defaultShader.use();
+
+        //upload texture to shader
+
+        defaultShader.uploadTexture("TEX_SAMPLER", 0);
+        glActiveTexture(GL_TEXTURE0);
+        testTexture.bind();
+
+        defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
+        defaultShader.uploadMat4f("uView", camera.getViewMatrix());
+        defaultShader.uploadFloat("uTime", Time.getTime());
 
         glBindVertexArray(vaoID);
 
@@ -109,5 +123,15 @@ public class LevelEditorScene extends Scene{
         glDisableVertexAttribArray(1);
         glBindVertexArray(0);
         defaultShader.detach();
+        if(!firstTime){
+            System.out.println("Creating gameObject");
+            GameObject go = new GameObject("game test 2");
+            go.addComponent(new SpriteRenderer());
+            this.addGameObjectToScene(go);
+            firstTime = true;
+        }
+        for(GameObject go : gameObjects){
+            go.update(dt);
+        }
     }
 }

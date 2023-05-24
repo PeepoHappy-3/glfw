@@ -38,10 +38,12 @@ public class Window {
             case 0:
                 scene = new LevelEditorScene();
                 scene.init();
+                scene.start();
                 break;
             case 1:
                 scene = new LevelScene();
                 scene.init();
+                scene.start();
                 break;
             default:
                 assert false: "Unknown scene'" + newScene + "'";
@@ -101,7 +103,7 @@ public class Window {
     public void loop(){
         float startTime = Time.getTime();
         float endTime = Time.getTime();
-    float dt = -1.0f;
+        float dt = -1.0f;
         while ( !glfwWindowShouldClose(glfwWindow) ) {
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
@@ -115,7 +117,7 @@ public class Window {
             }
 
             if(KeyInputHandler.isKeyPressed(GLFW_KEY_SPACE)){
-
+                fadeToBlack=true;
             }
             glfwSwapBuffers(glfwWindow); // swap the color buffers
             glfwPollEvents();
