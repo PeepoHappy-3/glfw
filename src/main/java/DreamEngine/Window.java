@@ -2,7 +2,6 @@ package DreamEngine;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
-import utils.Time;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -104,8 +103,8 @@ public class Window {
         Window.changeScene(0);
     }
     public void loop(){
-        float startTime = Time.getTime();
-        float endTime = Time.getTime();
+        float startTime = (float) glfwGetTime();
+        float endTime = (float)glfwGetTime();
         float dt = -1.0f;
         while ( !glfwWindowShouldClose(glfwWindow) ) {
             glClearColor(r, g, b, a);
@@ -124,7 +123,7 @@ public class Window {
             }
             glfwSwapBuffers(glfwWindow); // swap the color buffers
             glfwPollEvents();
-            endTime = Time.getTime();
+            endTime = (float)glfwGetTime();
             dt = endTime - startTime;
             startTime = endTime;
         }
