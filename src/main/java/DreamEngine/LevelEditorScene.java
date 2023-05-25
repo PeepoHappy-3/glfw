@@ -19,13 +19,18 @@ public class LevelEditorScene extends Scene{
         this.camera = new Camera(new Vector2f());
 
        sprites = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
-       obj1 = new GameObject("Object 1", new Transform(new Vector2f(100,100),
-               new Vector2f(256,256)));
-       obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
+       obj1 = new GameObject("Object 1", new Transform(new Vector2f(200,100),
+               new Vector2f(256,256)), 2);
+       //obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
+        obj1.addComponent(new SpriteRenderer(
+                new Sprite(AssetPool.getTexture("assets/images/blendImage1.png"))));
        this.addGameObjectToScene(obj1);
-        GameObject obj2 = new GameObject("Object 1", new Transform(new Vector2f(400,100),
-                new Vector2f(256,256)));
-        obj2.addComponent(new SpriteRenderer(sprites.getSprite(10)));
+        GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400,100),
+                new Vector2f(256,256)),-1);
+       // obj2.addComponent(new SpriteRenderer(sprites.getSprite(10)));
+       // obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
+        obj2.addComponent(new SpriteRenderer(
+                new Sprite(AssetPool.getTexture("assets/images/blendImage2.png"))));
         this.addGameObjectToScene(obj2);
 
     }
@@ -41,16 +46,6 @@ public class LevelEditorScene extends Scene{
     private  float flipTimeLeft = 0.0f;
     @Override
     public void update(float dt) {
-        //obj1.transform.position.x += 10* dt;
-        flipTimeLeft -=dt;
-        if(flipTimeLeft <= 0){
-            flipTimeLeft = flipTime;
-            sprIdx++;
-            if(sprIdx > 4){
-                sprIdx =0;
-            }
-            obj1.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(sprIdx));
-        }
         for(GameObject go : gameObjects){
             go.update(dt);
         }
