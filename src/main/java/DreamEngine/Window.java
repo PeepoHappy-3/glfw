@@ -104,7 +104,7 @@ public class Window {
     }
     public void loop(){
         float startTime = (float) glfwGetTime();
-        float endTime = (float)glfwGetTime();
+        float endTime;
         float dt = -1.0f;
         while ( !glfwWindowShouldClose(glfwWindow) ) {
             glClearColor(r, g, b, a);
