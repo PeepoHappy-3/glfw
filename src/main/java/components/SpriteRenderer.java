@@ -1,21 +1,27 @@
 package components;
 
 import DreamEngine.Component;
+import org.joml.Vector4f;
 
 public class SpriteRenderer extends Component {
+    private Vector4f color;
 
-    private boolean firstTime = false;
-    @Override
-    public void update(float dt) {
-        if(!firstTime){
-            System.out.println("im updating");
-            firstTime = true;
-        }
-
+    public SpriteRenderer(Vector4f color){
+        this.color = color;
     }
-
     @Override
     public void start() {
-        System.out.println("im starting");
+
     }
+    @Override
+    public void update(float dt) {
+
+
+    }
+
+    public Vector4f getColor(){
+        return this.color;
+    }
+
+
 }

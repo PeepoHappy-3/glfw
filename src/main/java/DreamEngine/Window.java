@@ -16,7 +16,7 @@ public class Window {
     private long glfwWindow;
     public float r,g,b,a;
     private boolean fadeToBlack = false;
-    private static Scene scene;
+    private static Scene currentScene;
     private Window(){
         this.width = 640;
         this.height = 480;
@@ -33,17 +33,20 @@ public class Window {
        return Window.window;
     }
 
+    public static Scene getScene(){
+        return get().currentScene;
+    }
     public static void changeScene(int newScene){
         switch (newScene){
             case 0:
-                scene = new LevelEditorScene();
-                scene.init();
-                scene.start();
+                currentScene = new LevelEditorScene();
+                currentScene.init();
+                currentScene.start();
                 break;
             case 1:
-                scene = new LevelScene();
-                scene.init();
-                scene.start();
+                currentScene = new LevelScene();
+                currentScene.init();
+                currentScene.start();
                 break;
             default:
                 assert false: "Unknown scene'" + newScene + "'";
@@ -108,7 +111,7 @@ public class Window {
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
             if(dt >= 0)
-                scene.update(dt);
+                currentScene.update(dt);
 
             if(fadeToBlack){
                 r = Math.max(r - 0.01f,0);
