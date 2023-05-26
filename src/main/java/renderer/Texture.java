@@ -13,7 +13,11 @@ public class Texture {
     private int textureID;
 
     private int width, height;
-    public Texture(String path){
+//    public Texture(){
+//
+//    }
+
+    public void init(String path){
         this.filePath = path;
 
         textureID = glGenTextures();
