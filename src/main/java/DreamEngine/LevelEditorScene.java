@@ -21,23 +21,24 @@ public class LevelEditorScene extends Scene{
     @Override
     public void init(){
         loadResources();
-        this.camera = new Camera(new Vector2f());
+        this.camera = new Camera(new Vector2f(-250,0));
+        sprites = AssetPool.getSpriteSheet("assets/images/spritesheets/decorationsAndBlocks.png");
         if(levelLoaded){
             this.activeGameObject = gameObjects.get(0);
             return;
         }
-       sprites = AssetPool.getSpriteSheet("assets/images/spritesheets/decorationsAndBlocks.png");
+
        obj1 = new GameObject("Object 1", new Transform(new Vector2f(200,100),
                new Vector2f(256,256)), -1);
        //obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
         SpriteRenderer obj1spriteRenderer = new SpriteRenderer();
         obj1spriteRenderer.setColor(new Vector4f(1,0,0,1));
         obj1.addComponent(obj1spriteRenderer);
-        obj1.addComponent(new RigidBody());
+        //obj1.addComponent(new RigidBody());
        // obj1.addComponent(new SpriteRenderer(new Vector4f(1,0,0,1)));
                 //new Sprite(AssetPool.getTexture("assets/images/blendImage1.png"))));
-       this.addGameObjectToScene(obj1);
 
+       obj1.addComponent(new RigidBody());
         GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400,100),
                 new Vector2f(256,256)),3);
        // obj2.addComponent(new SpriteRenderer(sprites.getSprite(10)));
@@ -48,6 +49,7 @@ public class LevelEditorScene extends Scene{
         obj2spriteRenderer.setSprite(obj2sprite);
         obj2.addComponent(obj2spriteRenderer);
         this.addGameObjectToScene(obj2);
+        this.addGameObjectToScene(obj1);
 
     }
 
@@ -58,6 +60,7 @@ public class LevelEditorScene extends Scene{
     }
     @Override
     public void update(float dt) {
+        MouseInputHandler.getOrthoX();
         for(GameObject go : gameObjects){
             go.update(dt);
         }
@@ -96,7 +99,6 @@ public class LevelEditorScene extends Scene{
                 ImGui.sameLine();
             }
         }
-        ImGui.text("sdfsdf");
         ImGui.end();
     }
 }

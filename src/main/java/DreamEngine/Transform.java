@@ -36,7 +36,7 @@ public class Transform {
     public boolean equals(Object obj) {
        if(obj ==null) return false;
        if(!(obj instanceof Transform)) return false;
-       Transform t = (Transform) obj;
+         Transform t = (Transform) obj;
        return t.position.equals(this.position) && t.scale.equals(this.scale);
     }
 }
