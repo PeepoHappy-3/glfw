@@ -16,6 +16,7 @@ public class Window {
     public float r,g,b,a;
     private boolean fadeToBlack = false;
     private static Scene currentScene;
+    private ImGuiLayer imGuiLayer;
     private Window(){
         this.width = 640;
         this.height = 480;
@@ -31,6 +32,7 @@ public class Window {
         }
        return Window.window;
     }
+
 
     public static Scene getScene(){
         return get().currentScene;
@@ -102,6 +104,8 @@ public class Window {
         GL.createCapabilities();
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+        this.imGuiLayer = new ImGuiLayer(glfwWindow);
+        this.imGuiLayer.initImGui();
         Window.changeScene(0);
     }
     public void loop(){
@@ -123,11 +127,20 @@ public class Window {
             if(KeyInputHandler.isKeyPressed(GLFW_KEY_SPACE)){
                 fadeToBlack=true;
             }
+            this.imGuiLayer.update(dt);
             glfwSwapBuffers(glfwWindow); // swap the color buffers
             glfwPollEvents();
             endTime = (float)glfwGetTime();
             dt = endTime - startTime;
             startTime = endTime;
         }
+    }
+
+    public static int getWidth(){
+        return get().width;
+    }
+
+    public static int getHeight(){
+        return get().height;
     }
 }
