@@ -7,6 +7,7 @@ import components.Sprite;
 import components.SpriteRenderer;
 import components.SpriteSheet;
 import imgui.ImGui;
+import imgui.ImVec2;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import utils.AssetPool;
@@ -25,7 +26,7 @@ public class LevelEditorScene extends Scene{
             this.activeGameObject = gameObjects.get(0);
             return;
         }
-       sprites = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
+       sprites = AssetPool.getSpriteSheet("assets/images/spritesheets/decorationsAndBlocks.png");
        obj1 = new GameObject("Object 1", new Transform(new Vector2f(200,100),
                new Vector2f(256,256)), -1);
        //obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
@@ -52,8 +53,8 @@ public class LevelEditorScene extends Scene{
 
     private void loadResources(){
         AssetPool.getShader("assets/shaders/default.glsl");
-        AssetPool.addSpriteSheet("assets/images/spritesheet.png",
-                new SpriteSheet(AssetPool.getTexture("assets/images/spritesheet.png"),16,16,26,0));
+        AssetPool.addSpriteSheet("assets/images/spritesheets/decorationsAndBlocks.png",
+                new SpriteSheet(AssetPool.getTexture("assets/images/spritesheets/decorationsAndBlocks.png"),32,32,48,0));
     }
     @Override
     public void update(float dt) {
@@ -64,8 +65,38 @@ public class LevelEditorScene extends Scene{
     }
     @Override
     public void imgui(){
-//        ImGui.begin("Test window");
-//        ImGui.text("sdfsdf");
-//        ImGui.end();
+        ImGui.begin("Test window");
+        ImVec2 windowPos = new ImVec2();
+        ImGui.getWindowPos(windowPos);
+        ImVec2 windowSize = new ImVec2();
+        ImGui.getWindowSize(windowSize);
+        ImVec2 itemSpacing = new ImVec2();
+        ImGui.getStyle().getItemSpacing(itemSpacing);
+        float windowsX2 = windowPos.x + windowSize.x;
+        for(int i = 0; i < sprites.size(); i++){
+            Sprite sprite = sprites.getSprite(i);
+            float spriteWidth = sprite.getWidth();
+            float spriteHeight = sprite.getHeight();
+            int id = sprite.getTexId();
+            Vector2f[] texCoords = sprite.getTexCoords();
+
+            ImGui.pushID(i);
+            if(ImGui.imageButton(id, spriteHeight, spriteHeight,
+                    texCoords[0].x, texCoords[0].y,
+                    texCoords[2].x, texCoords[2].y)){
+                System.out.println("Button " + i + "clicked");
+            }
+            ImGui.popID();
+
+            ImVec2 lastButtonPos = new ImVec2();
+            ImGui.getItemRectMax(lastButtonPos);
+            float lastButtonX2 = lastButtonPos.x;
+            float nextButtonX2 = lastButtonX2 + itemSpacing.x + spriteWidth;
+            if(i + 1 < sprites.size() && nextButtonX2 < windowsX2){
+                ImGui.sameLine();
+            }
+        }
+        ImGui.text("sdfsdf");
+        ImGui.end();
     }
 }
