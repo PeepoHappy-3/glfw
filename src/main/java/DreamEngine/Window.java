@@ -127,7 +127,7 @@ public class Window {
             if(KeyInputHandler.isKeyPressed(GLFW_KEY_SPACE)){
                 fadeToBlack=true;
             }
-            this.imGuiLayer.update(dt);
+            this.imGuiLayer.update(dt, currentScene);
             glfwSwapBuffers(glfwWindow); // swap the color buffers
             glfwPollEvents();
             endTime = (float)glfwGetTime();

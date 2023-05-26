@@ -152,11 +152,11 @@ public class ImGuiLayer {
             final ImFontConfig fontConfig = new ImFontConfig(); // Natively allocated object, should be explicitly destroyed
 
             // Glyphs could be added per-font as well as per config used globally like here
-            fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesDefault());
+            fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesCyrillic());
 
             // Fonts merge example
             fontConfig.setPixelSnapH(true);
-            fontAtlas.addFontFromFileTTF("C:/Windows/Fonts/segoeui.ttf", 32, fontConfig);
+            fontAtlas.addFontFromFileTTF("C:/Windows/Fonts/segoeui.ttf", 24, fontConfig);
             fontConfig.destroy(); // After all fonts were added we don't need this config more
         } else if (new File("C:/Windows/Fonts/Cour.ttf").isFile()) {
             // Fallback font
@@ -165,11 +165,11 @@ public class ImGuiLayer {
             final ImFontConfig fontConfig = new ImFontConfig(); // Natively allocated object, should be explicitly destroyed
 
             // Glyphs could be added per-font as well as per config used globally like here
-            fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesDefault());
+            fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesCyrillic());
 
             // Fonts merge example
             fontConfig.setPixelSnapH(true);
-            fontAtlas.addFontFromFileTTF("C:/Windows/Fonts/Cour.ttf", 32, fontConfig);
+            fontAtlas.addFontFromFileTTF("C:/Windows/Fonts/Cour.ttf", 24, fontConfig);
             fontConfig.destroy(); // After all fonts were added we don't need this config more
         }
 
@@ -181,12 +181,12 @@ public class ImGuiLayer {
         imGuiGl3.init("#version 330 core");
     }
 
-    public void update(float dt ){//, Scene currentScene) {
+    public void update(float dt, Scene currentScene) {
         startFrame(dt);
 
         // Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
-        setupDockspace();
-        //currentScene.imgui();
+        //setupDockspace();
+        currentScene.sceneImgui();
         ImGui.showDemoWindow();
         //gameViewWindow.imgui();
         //propertiesWindow.imgui();
@@ -201,10 +201,10 @@ public class ImGuiLayer {
     }
 
     private void endFrame() {
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glViewport(0, 0, Window.getWidth(),Window.getHeight());
-        glClearColor(0, 0, 0, 1);
-        glClear(GL_COLOR_BUFFER_BIT);
+        //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        //glViewport(0, 0, Window.getWidth(),Window.getHeight());
+        //glClearColor(0, 0, 0, 1);
+       // glClear(GL_COLOR_BUFFER_BIT);
 
         // After Dear ImGui prepared a draw data, we use it in the LWJGL3 renderer.
         // At that moment ImGui will be rendered to the current OpenGL context.
@@ -248,6 +248,7 @@ public class ImGuiLayer {
 
         ImGui.end();
     }
+
 
 //    public PropertiesWindow getPropertiesWindow() {
 //        return this.propertiesWindow;

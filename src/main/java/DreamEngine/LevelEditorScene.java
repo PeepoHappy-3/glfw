@@ -3,6 +3,7 @@ package DreamEngine;
 import components.Sprite;
 import components.SpriteRenderer;
 import components.SpriteSheet;
+import imgui.ImGui;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import utils.AssetPool;
@@ -20,13 +21,14 @@ public class LevelEditorScene extends Scene{
 
        sprites = AssetPool.getSpriteSheet("assets/images/spritesheet.png");
        obj1 = new GameObject("Object 1", new Transform(new Vector2f(200,100),
-               new Vector2f(256,256)), 2);
+               new Vector2f(256,256)), -1);
        //obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
-        obj1.addComponent(new SpriteRenderer(
-                new Sprite(AssetPool.getTexture("assets/images/blendImage1.png"))));
+        obj1.addComponent(new SpriteRenderer(new Vector4f(1,0,0,1)));
+                //new Sprite(AssetPool.getTexture("assets/images/blendImage1.png"))));
        this.addGameObjectToScene(obj1);
+       this.activeGameObject = obj1;
         GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400,100),
-                new Vector2f(256,256)),-1);
+                new Vector2f(256,256)),3);
        // obj2.addComponent(new SpriteRenderer(sprites.getSprite(10)));
        // obj1.addComponent(new SpriteRenderer(sprites.getSprite(0)));
         obj2.addComponent(new SpriteRenderer(
@@ -50,5 +52,11 @@ public class LevelEditorScene extends Scene{
             go.update(dt);
         }
         this.renderer.render();
+    }
+    @Override
+    public void imgui(){
+        ImGui.begin("Test window");
+        ImGui.text("sdfsdf");
+        ImGui.end();
     }
 }
