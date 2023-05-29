@@ -5,7 +5,9 @@ import components.*;
 import imgui.ImGui;
 import imgui.ImVec2;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
+import renderer.DebugDraw;
 import scenes.Scene;
 import utils.AssetPool;
 
@@ -50,6 +52,8 @@ public class LevelEditorScene extends Scene {
         this.addGameObjectToScene(obj2);
         this.addGameObjectToScene(obj1);
 
+
+
     }
 
     private void loadResources(){
@@ -59,10 +63,19 @@ public class LevelEditorScene extends Scene {
                 new SpriteSheet(AssetPool.getTexture("assets/images/spritesheets/decorationsAndBlocks.png"),32,32,48,0));
 
     }
+
+    float t = 0.0f;
+
     @Override
     public void update(float dt) {
         mouseControls.update(dt);
         //MouseInputHandler.getOrthoX();
+        float x = ((float)Math.sin(t) * 200.0f) + 600;
+        float y = ((float)Math.cos(t) * 200.0f) + 400;
+
+        t+= 0.05f;
+        //DebugDraw.addLine2D(new Vector2f(600,400), new Vector2f(x,y ), new Vector3f(0,1,0), 10);
+
         for(GameObject go : gameObjects){
             go.update(dt);
         }

@@ -2,6 +2,7 @@ package DreamEngine;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import renderer.DebugDraw;
 import scenes.LevelEditorScene;
 import scenes.LevelScene;
 import scenes.Scene;
@@ -117,23 +118,19 @@ public class Window {
         float dt = -1.0f;
 
         while ( !glfwWindowShouldClose(glfwWindow) ) {
+
+            glfwPollEvents();
+
+            DebugDraw.beginFrame();
             glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT); // clear the framebuffer
-            if(dt >= 0)
+            if(dt >= 0){
+                DebugDraw.draw();
                 currentScene.update(dt);
-
-            if(fadeToBlack){
-                r = Math.max(r - 0.01f,0);
-                g = Math.max(g - 0.01f,0);
-                b = Math.max(b - 0.01f,0);
-            }
-
-            if(KeyInputHandler.isKeyPressed(GLFW_KEY_SPACE)){
-                fadeToBlack=true;
             }
             this.imGuiLayer.update(dt, currentScene);
             glfwSwapBuffers(glfwWindow); // swap the color buffers
-            glfwPollEvents();
+
             endTime = (float)glfwGetTime();
             dt = endTime - startTime;
             startTime = endTime;
