@@ -1,7 +1,5 @@
 package components;
 
-import DreamEngine.Component;
-
 public class FontRenderer extends Component {
 
     @Override

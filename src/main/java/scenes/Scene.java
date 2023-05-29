@@ -1,12 +1,15 @@
-package DreamEngine;
+package scenes;
 
+import DreamEngine.Camera;
+import DreamEngine.GameObject;
+import DreamEngine.GameObjectDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import components.SpriteRenderer;
+import components.Component;
+import components.ComponentDeserializer;
 import imgui.ImGui;
 import renderer.Renderer;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,7 +19,7 @@ import java.util.List;
 
 public abstract class Scene {
     protected Renderer renderer = new Renderer();
-    protected Camera camera;
+    public Camera camera;
     private boolean isRunning = false;
     protected List<GameObject> gameObjects = new ArrayList<>();
     protected GameObject activeGameObject = null;
@@ -86,10 +89,26 @@ public abstract class Scene {
                 e.printStackTrace();
             }
             if(!path.equals("")){
+                int maxGoId = -1;
+                int maxCompId = -1;
                 GameObject[] objs = gson.fromJson(path, GameObject[].class);
                 for(int i =0; i < objs.length;i++){
                     addGameObjectToScene(objs[i]);
+                    for(Component c : objs[i].getAllComponents()){
+                        if(c.getUid() > maxCompId){
+                            maxCompId = c.getUid();
+                        }
+                    }
+                    if(objs[i].getUid() > maxGoId){
+                        maxGoId = objs[i].getUid();
+                    }
+
                 }
+                maxGoId++;
+                maxCompId++;
+                GameObject.init(maxGoId);
+                GameObject.init(maxCompId);
+
                 this.levelLoaded = true;
             }
 //        String ser = gson.toJson(obj1);

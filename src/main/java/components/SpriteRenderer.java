@@ -1,14 +1,10 @@
 package components;
 
-import DreamEngine.Component;
 import DreamEngine.Transform;
 import imgui.ImGui;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
-import org.w3c.dom.Text;
 import renderer.Texture;
-
-import java.awt.desktop.SystemEventListener;
 
 public class SpriteRenderer extends Component {
     private Vector4f color = new Vector4f(1,1,1,1);

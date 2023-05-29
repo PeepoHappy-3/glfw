@@ -1,20 +1,18 @@
-package DreamEngine;
+package scenes;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import components.RigidBody;
-import components.Sprite;
-import components.SpriteRenderer;
-import components.SpriteSheet;
+import DreamEngine.*;
+import components.*;
 import imgui.ImGui;
 import imgui.ImVec2;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
+import scenes.Scene;
 import utils.AssetPool;
 
-public class LevelEditorScene extends Scene{
-    private  GameObject obj1;
+public class LevelEditorScene extends Scene {
+    private GameObject obj1;
     private SpriteSheet sprites;
+    MouseControls mouseControls = new MouseControls();
     public LevelEditorScene(){
 
     }
@@ -34,11 +32,11 @@ public class LevelEditorScene extends Scene{
         SpriteRenderer obj1spriteRenderer = new SpriteRenderer();
         obj1spriteRenderer.setColor(new Vector4f(1,0,0,1));
         obj1.addComponent(obj1spriteRenderer);
+
         //obj1.addComponent(new RigidBody());
        // obj1.addComponent(new SpriteRenderer(new Vector4f(1,0,0,1)));
-                //new Sprite(AssetPool.getTexture("assets/images/blendImage1.png"))));
-
-       obj1.addComponent(new RigidBody());
+                //new Sprite(AssetPool.getTexture("assets/images/blendImage1.png"))));this.addGameObjectToScene(obj1);
+        //obj1.addComponent(new RigidBody());
         GameObject obj2 = new GameObject("Object 2", new Transform(new Vector2f(400,100),
                 new Vector2f(256,256)),3);
        // obj2.addComponent(new SpriteRenderer(sprites.getSprite(10)));
@@ -48,19 +46,23 @@ public class LevelEditorScene extends Scene{
         obj2sprite.setTexture(AssetPool.getTexture("assets/images/blendImage2.png"));
         obj2spriteRenderer.setSprite(obj2sprite);
         obj2.addComponent(obj2spriteRenderer);
+
         this.addGameObjectToScene(obj2);
         this.addGameObjectToScene(obj1);
 
     }
 
     private void loadResources(){
+
         AssetPool.getShader("assets/shaders/default.glsl");
         AssetPool.addSpriteSheet("assets/images/spritesheets/decorationsAndBlocks.png",
                 new SpriteSheet(AssetPool.getTexture("assets/images/spritesheets/decorationsAndBlocks.png"),32,32,48,0));
+
     }
     @Override
     public void update(float dt) {
-        MouseInputHandler.getOrthoX();
+        mouseControls.update(dt);
+        //MouseInputHandler.getOrthoX();
         for(GameObject go : gameObjects){
             go.update(dt);
         }
@@ -87,7 +89,10 @@ public class LevelEditorScene extends Scene{
             if(ImGui.imageButton(id, spriteHeight, spriteHeight,
                     texCoords[0].x, texCoords[0].y,
                     texCoords[2].x, texCoords[2].y)){
-                System.out.println("Button " + i + "clicked");
+                GameObject o = Prefabs.generateSpriteObject(sprite,spriteWidth,spriteHeight);
+                //attach to the mouse cursor
+                mouseControls.pickUpObject(o);
+
             }
             ImGui.popID();
 

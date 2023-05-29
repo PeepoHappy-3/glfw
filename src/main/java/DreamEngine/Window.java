@@ -2,6 +2,9 @@ package DreamEngine;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
+import scenes.LevelEditorScene;
+import scenes.LevelScene;
+import scenes.Scene;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -18,8 +21,8 @@ public class Window {
     private static Scene currentScene;
     private ImGuiLayer imGuiLayer;
     private Window(){
-        this.width = 640;
-        this.height = 480;
+        this.width = 1280;
+        this.height = 720;
         this.title = "Игра мечты";
         this.r=1;
         this.g=1;

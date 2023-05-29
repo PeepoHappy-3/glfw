@@ -1,6 +1,8 @@
-package DreamEngine;
+package scenes;
 
-public class LevelScene extends Scene{
+import scenes.Scene;
+
+public class LevelScene extends Scene {
     public LevelScene(){
         System.out.println("levelScene");
     }

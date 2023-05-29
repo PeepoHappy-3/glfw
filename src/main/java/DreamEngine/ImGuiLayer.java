@@ -4,9 +4,6 @@ package DreamEngine;
 //import editor.MenuBar;
 //import editor.PropertiesWindow;
 //import editor.SceneHierarchyWindow;
-import DreamEngine.KeyInputHandler;
-import DreamEngine.MouseInputHandler;
-import DreamEngine.Window;
 import imgui.*;
 import imgui.callback.ImStrConsumer;
 import imgui.callback.ImStrSupplier;
@@ -14,18 +11,14 @@ import imgui.flag.*;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.type.ImBoolean;
+import scenes.Scene;
 //import javafx.scene.text.Font;
 //import renderer.PickingTexture;
 //import scenes.Scene;
 
-import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
-import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 
 public class ImGuiLayer {
 
@@ -109,6 +102,9 @@ public class ImGuiLayer {
             }
 
 
+            if (!io.getWantCaptureMouse()){
+                MouseInputHandler.mouseButtonCallback(w, button, action, mods);
+            }
 //            if (gameViewWindow.getWantCaptureMouse()) {
 //                MouseInputHandler.mouseButtonCallback(w, button, action, mods);
 //            }
@@ -187,7 +183,7 @@ public class ImGuiLayer {
         // Any Dear ImGui code SHOULD go between ImGui.newFrame()/ImGui.render() methods
         //setupDockspace();
         currentScene.sceneImgui();
-        ImGui.showDemoWindow();
+        //ImGui.showDemoWindow();
         //gameViewWindow.imgui();
         //propertiesWindow.imgui();
         //sceneHeirarchyWindow.imgui();
