@@ -3,6 +3,7 @@ package components;
 import DreamEngine.GameObject;
 import DreamEngine.MouseInputHandler;
 import DreamEngine.Window;
+import utils.Settings;
 
 import java.awt.event.MouseListener;
 
@@ -25,7 +26,13 @@ public class MouseControls extends Component {
             holdingObj.transform.position.x = MouseInputHandler.getOrthoX() - 16;
             holdingObj.transform.position.y = MouseInputHandler.getOrthoY() - 16;
 
-            System.out.println("x obj: " + holdingObj.transform.position.x + " x mouse: " + (MouseInputHandler.getOrthoX()-16));
+            holdingObj.transform.position.x = (int)(holdingObj.transform.position.x / Settings.GRID_WIDTH)
+                    * Settings.GRID_WIDTH;
+            holdingObj.transform.position.y = (int)(holdingObj.transform.position.y / Settings.GRID_HEIGHT)
+                    * Settings.GRID_HEIGHT;
+
+            System.out.println("x obj: " + holdingObj.transform.position.x + " x mouse: "
+                    + (MouseInputHandler.getOrthoX()-16));
             if(MouseInputHandler.getButtonPressed(GLFW_MOUSE_BUTTON_LEFT)){
                 place();
             }
